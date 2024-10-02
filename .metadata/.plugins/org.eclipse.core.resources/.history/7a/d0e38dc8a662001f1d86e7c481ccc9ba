@@ -1,0 +1,9 @@
+package com.TJ7.Model;
+
+public class StudentTable {
+
+	public StudentTable() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

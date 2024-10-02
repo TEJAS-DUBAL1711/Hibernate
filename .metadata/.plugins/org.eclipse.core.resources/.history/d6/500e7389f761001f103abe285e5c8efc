@@ -1,0 +1,9 @@
+package com.TJ7.Model;
+
+public class AnswerTable {
+
+	public AnswerTable() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

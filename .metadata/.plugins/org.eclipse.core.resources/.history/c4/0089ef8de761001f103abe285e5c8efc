@@ -1,0 +1,16 @@
+package com.TJ7.App;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class LaunchApp {
+
+	public static void main(String[] args) {
+
+			
+		
+		
+
+	}
+
+}

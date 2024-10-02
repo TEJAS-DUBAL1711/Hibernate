@@ -1,0 +1,84 @@
+
+Overview of Transaction Management in Hibernate:
+In Hibernate, transactions are used to ensure that a sequence of operations (like saving, updating, or deleting data) are executed in a safe and consistent manner. The methods you've mentioned, commit(), rollback(), and markForRollbackOnly(), are part of the transaction management process.
+
+Explanation of Methods:
+commit():
+
+Purpose: This method commits the current transaction.
+What it does:
+When you call commit(), Hibernate attempts to apply all changes made during the transaction to the database.
+It sends the SQL commands (like INSERT, UPDATE, DELETE) generated during the transaction to the database for execution.
+If everything goes well, the changes are saved permanently in the database.
+Typical Use Case: You call commit() after successfully completing all the operations within a transaction.
+rollback():
+
+Purpose: This method rolls back the current transaction.
+What it does:
+When you call rollback(), Hibernate discards all changes made during the transaction.
+None of the changes are applied to the database, and the database state remains as it was before the transaction began.
+This is useful in case of an error or exception during the transaction, allowing you to undo all operations safely.
+Typical Use Case: You call rollback() when something goes wrong during the transaction and you want to cancel all changes.
+markForRollbackOnly() (usually referred to as setRollbackOnly() in many implementations):
+
+Purpose: This method marks the current transaction so that it can only be rolled back.
+What it does:
+If you call this method, the transaction is flagged as "doomed," meaning it cannot be committed anymore and must be rolled back.
+This is useful if an error is detected mid-transaction, but you want to continue some operations before eventually rolling back the entire transaction.
+Typical Use Case: You use this when you detect an issue in the middle of a transaction, and you want to ensure that the transaction is rolled back later.
+Lifecycle/Workflow for Storing Data in the Database Using Hibernate:
+Start a Transaction:
+
+You begin by starting a transaction using something like Transaction tx = session.beginTransaction();. This groups all your database operations under a single transaction.
+Perform Operations:
+
+Use Hibernate methods such as persist(), save(), update(), or delete() to perform operations on your entities.
+Hibernate tracks these changes in its session but does not immediately apply them to the database.
+Flush the Session:
+
+Before committing the transaction, Hibernate may automatically flush the session (or you can manually do it with session.flush()).
+Flushing synchronizes the session state with the database by generating the necessary SQL statements (like INSERT, UPDATE, or DELETE).
+Commit the Transaction:
+
+After performing all operations, you call tx.commit();. This applies all the changes made during the transaction to the database.
+If the commit is successful, the transaction is completed, and the changes are permanently saved in the database.
+Rollback if Needed:
+
+If an error occurs during the transaction, you can call tx.rollback(); to discard all the changes made during the transaction. This keeps the database unchanged as if the transaction never happened.
+Handle Exceptions:
+
+If any unexpected errors occur, Hibernate may throw a PersistenceException or other exceptions. You should handle these exceptions to ensure that resources are properly cleaned up, and transactions are rolled back if needed.
+Example Workflow:
+java
+Copy code
+Transaction tx = null;
+try {
+    tx = session.beginTransaction();
+
+    MyEntity entity = new MyEntity();
+    entity.setName("Example Name");
+
+    session.persist(entity); // Marks the object for insertion
+    
+    // Other operations...
+    
+    tx.commit(); // Saves changes to the database
+} catch (Exception e) {
+    if (tx != null) {
+        tx.rollback(); // Discards changes in case of error
+    }
+    e.printStackTrace(); // Handle the exception
+} finally {
+    session.close(); // Always close the session
+}
+Summary:
+commit(): Finalizes and applies all changes in the transaction to the database.
+rollback(): Discards all changes made during the transaction, reverting the database to its previous state.
+markForRollbackOnly(): Marks the transaction as rollback-only, ensuring it cannot be committed.
+Understanding these concepts and the lifecycle of transactions in Hibernate is crucial for managing data consistency and ensuring that operations are executed reliably.
+
+
+
+
+
+

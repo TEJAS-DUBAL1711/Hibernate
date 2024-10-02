@@ -1,0 +1,154 @@
+HibernateException: A general exception class used by Hibernate to wrap various underlying exceptions.
+Session: An interface representing a single unit of work with the database. It provides methods to create, read, update, and delete operations for persistent objects.
+SessionFactory: An interface that represents a factory for Session objects. It is a thread-safe object and is typically created once during the application's initialization.
+Transaction: An interface representing a transaction in Hibernate. It is used to manage transaction boundaries (begin, commit, rollback).
+Configuration: A class used to configure Hibernate settings, including database connection properties and mappings.
+Student: A model class representing an entity in the database, typically mapped to a table.
+3. Class Declaration:
+java
+Copy code
+public class LaunchStandardApp 
+{
+This is the main class containing the main method, which serves as the entry point of the application.
+4. Main Method:
+java
+Copy code
+public static void main(String[] args) 
+{
+The main method is the entry point of the Java application, where the program starts executing.
+5. Variable Declarations:
+java
+Copy code
+Configuration config = null;
+SessionFactory sessionFactory = null;
+Session session = null;
+Transaction transaction = null;
+boolean flag = false;
+config: Used to hold the Hibernate configuration.
+sessionFactory: A factory for Session objects.
+session: Represents the session for interacting with the database.
+transaction: Represents the transaction for committing or rolling back database operations.
+flag: A boolean flag to determine whether the transaction should be committed or rolled back.
+6. Creating Configuration:
+java
+Copy code
+config = new Configuration();
+An instance of Configuration is created. This class is used to configure Hibernate and bootstrap the SessionFactory.
+7. Configuring Hibernate:
+java
+Copy code
+config.configure();
+This method loads the default Hibernate configuration file (hibernate.cfg.xml) and applies the settings to the Configuration object.
+8. Building SessionFactory:
+java
+Copy code
+sessionFactory = config.buildSessionFactory();
+The buildSessionFactory method creates a SessionFactory instance from the Configuration object. This is a heavyweight object and should be created only once per application.
+9. Opening Session:
+java
+Copy code
+session = sessionFactory.openSession();
+A new Session is opened from the SessionFactory. This Session is used to interact with the database.
+10. Creating a Student Object:
+java
+Copy code
+Student student = new Student();
+student.setSid(2);
+student.setsName("Rohit");
+student.setScity("Bengaluru");
+A new Student object is created, and its properties are set. This object represents a row in the Student table in the database.
+11. Transaction Management:
+java
+Copy code
+try
+{
+    transaction = session.beginTransaction();
+    //session.save(student);
+    session.persist(student);
+    flag = true;
+}
+beginTransaction(): Starts a new database transaction.
+session.persist(student): Saves the student object to the database. The persist method adds the object to the session but does not immediately insert it into the database; the actual insertion happens when the transaction is committed.
+flag = true: The flag is set to true to indicate that the transaction was successful and should be committed.
+12. Exception Handling:
+java
+Copy code
+catch(HibernateException e)
+{
+    e.printStackTrace();
+}
+catch(Exception e)
+{
+    e.printStackTrace();
+}
+If any exceptions occur during the transaction, they are caught here, and the stack trace is printed. This helps in debugging the issue.
+13. Final Block:
+java
+Copy code
+finally
+{
+    if(flag == true)
+    {
+        transaction.commit();
+    }
+    else
+    {
+        transaction.rollback();
+    }
+    
+    session.close();
+    sessionFactory.close();
+}
+commit(): Commits the transaction, making all changes permanent in the database.
+rollback(): Rolls back the transaction, undoing any changes made during the transaction if an error occurs.
+session.close(): Closes the Session, releasing the database connection.
+sessionFactory.close(): Closes the SessionFactory, releasing all resources.
+Summary:
+Configuration: Sets up Hibernate configuration and builds SessionFactory.
+SessionFactory: Creates Session instances.
+Session: Represents a connection to the database, used to perform CRUD operations.
+Transaction: Manages transaction boundaries.
+commit(): Finalizes the transaction, saving changes to the database.
+rollback(): Reverts any changes made during the transaction.
+This code demonstrates the basic flow of using Hibernate to persist an object in the database, including transaction management and exception handling.
+
+
+
+
+
+
+1. Configuration in Hibernate:
+Configuration Class: The Configuration class in Hibernate is responsible for setting up the framework. It allows you to specify various settings, including database connection details, Hibernate-specific properties, and the mapping of Java classes to database tables.
+
+Configuring Hibernate:
+
+When you create an instance of Configuration and call config.configure(), Hibernate looks for a configuration file, typically named hibernate.cfg.xml. This file contains essential information like the database connection URL, username, password, dialect (which tells Hibernate which SQL dialect to use), and mappings between Java classes and database tables.
+java
+Copy code
+Configuration config = new Configuration();
+config.configure();
+This code loads the configuration settings from hibernate.cfg.xml.
+
+2. SessionFactory and Its Importance:
+SessionFactory: The SessionFactory is a key component in Hibernate. It is a factory for Session objects, which are used to interact with the database.
+
+Why SessionFactory is Needed:
+
+The SessionFactory is a heavyweight object, meaning that it consumes a significant amount of resources, such as database connections, caches, and other settings. However, it is also thread-safe and designed to be created once during the application's initialization and used throughout the application’s lifetime.
+The SessionFactory holds the configuration settings and mappings loaded by the Configuration object. It uses these settings to create Session instances, which are lightweight and used to perform database operations like saving, updating, or querying objects.
+java
+Copy code
+SessionFactory sessionFactory = config.buildSessionFactory();
+This line of code tells Hibernate to use the settings loaded into the Configuration object to build a SessionFactory. Once created, the SessionFactory can provide Session objects that are configured according to the settings defined in hibernate.cfg.xml.
+
+3. Bootstrap Process:
+Bootstrapping: Bootstrapping refers to the initialization process of Hibernate. When you call config.buildSessionFactory(), Hibernate:
+Validates the configuration settings (like database connection properties).
+Establishes connections to the database.
+Initializes caches.
+Loads mapping metadata, which tells Hibernate how to map Java classes to database tables.
+Creates and returns a SessionFactory instance that is ready to produce Session objects for database operations.
+Summary:
+Configuration Class: Used to load and apply Hibernate settings, including database connection and mappings.
+SessionFactory: Created from the Configuration object, it is a central part of Hibernate, responsible for managing connections to the database and providing Session objects. It is initialized (or bootstrapped) using the configuration details.
+So, while Configuration sets up the basic settings for Hibernate, the SessionFactory is the engine that drives interactions with the database based on those settings.

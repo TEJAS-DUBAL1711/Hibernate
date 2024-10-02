@@ -1,0 +1,14 @@
+package com.TJ7.App;
+
+public class LaunchApp {
+
+	public LaunchApp() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

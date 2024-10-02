@@ -1,0 +1,36 @@
+The `@OneToOne(cascade=CascadeType.ALL)` annotation in Hibernate is used to define a one-to-one relationship between two entities and specify the cascade behavior for operations performed on the associated entity.
+
+### **Explanation:**
+
+- **`@OneToOne`:** This annotation defines a one-to-one relationship between two entities. In a one-to-one relationship, one entity is associated with exactly one instance of another entity.
+
+- **`cascade=CascadeType.ALL`:** The `cascade` attribute specifies how operations (like persist, merge, remove, etc.) should propagate from the parent entity to the associated child entity. `CascadeType.ALL` means that all operations performed on the parent entity will be cascaded to the associated child entity.
+
+### **What This Means:**
+
+When you have `@OneToOne(cascade=CascadeType.ALL)` on an entity, here's what happens:
+
+1. **Persisting:** When you save (persist) the parent entity, the associated child entity is also saved automatically.
+   
+   - Example: If you persist a `Question` entity, the associated `Answer` entity will also be persisted.
+
+2. **Merging:** When you update (merge) the parent entity, the associated child entity is also updated.
+
+3. **Removing:** When you delete (remove) the parent entity, the associated child entity is also deleted.
+
+4. **Refreshing:** If the parent entity is refreshed from the database, the associated child entity is also refreshed.
+
+5. **Detaching:** If the parent entity is detached from the persistence context, the associated child entity is also detached.
+
+### **Use Case Example:**
+
+```java
+@OneToOne(cascade=CascadeType.ALL)
+private Answer answer;
+```
+
+- **Persist:** If you save a `Question` entity that has an associated `Answer` entity, both the `Question` and `Answer` will be saved to the database.
+  
+- **Remove:** If you delete the `Question` entity, the corresponding `Answer` entity will also be deleted from the database.
+
+This cascading behavior is useful when you want to ensure that the lifecycle of the related entities is managed together, so you don't have to manually handle each operation on the associated entities.

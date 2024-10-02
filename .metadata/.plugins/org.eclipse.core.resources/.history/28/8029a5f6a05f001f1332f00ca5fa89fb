@@ -1,0 +1,10 @@
+package com.TJ7.app;
+
+public class LaunchAdvanceApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

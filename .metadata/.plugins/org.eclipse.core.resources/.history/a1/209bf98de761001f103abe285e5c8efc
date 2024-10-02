@@ -1,0 +1,9 @@
+package com.TJ7.Model;
+
+public class Question {
+
+	public Question() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

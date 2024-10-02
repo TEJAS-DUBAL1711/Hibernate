@@ -1,0 +1,9 @@
+package com.TJ7.Model;
+
+public class Course {
+
+	public Course() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

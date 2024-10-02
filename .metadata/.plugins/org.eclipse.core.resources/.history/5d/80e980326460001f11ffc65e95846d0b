@@ -1,0 +1,46 @@
+package com.TJ7.App;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import com.TJ7.Model.Student;
+
+public class GetRecordApp {
+
+	public static void main(String[] args) {
+			
+		
+		SessionFactory sf = new Configuration().configure().addAnnotatedClass(Student.class).buildSessionFactory();
+		
+		Session session=null;
+		
+		try {
+			
+			session=sf.openSession();
+			
+			//Student st=session.get(Student.class, 105);// Eager loading
+			Student st=session.load(Student.class, 101); // lazy loading 
+			
+			
+			
+			System.out.println(st);
+//			System.out.println(st.getSid());
+//			System.out.println(st.getsCity());
+//			System.out.println(st.getsName());
+//			
+			
+		}catch(HibernateException e) {
+			e.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+			sf.close();
+			
+		}
+
+	}
+
+}
